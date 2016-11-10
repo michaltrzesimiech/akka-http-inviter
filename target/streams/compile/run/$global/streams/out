@@ -1,4 +1,1 @@
 [0m[[0mdebug[0m] [0mjavaOptions: List()[0m
-[0m[[0minfo[0m] [0mRunning WebService [0m
-[0m[[0minfo[0m] [0m[DEBUG] [11/10/2016 13:31:03.663] [main] [EventStream(akka://inviter)] logger log1-Logging$DefaultLogger started[0m
-[0m[[0minfo[0m] [0m[DEBUG] [11/10/2016 13:31:03.663] [main] [EventStream(akka://inviter)] Default Loggers started[0m
