@@ -1,25 +1,24 @@
+/** Building version (with dummy route covering 2 endpoints, temporarily without DB Actor). */
+
 import akka.actor.ActorSystem
 import akka.actor.{ Actor, Props }
-import akka.http.scaladsl.Http
 import akka.event.{ LoggingAdapter, Logging }
 import akka.http.scaladsl.client.RequestBuilding
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
-import akka.http.scaladsl.marshalling.ToResponseMarshallable
+import akka.http.scaladsl.marshalling.{ ToResponseMarshallable, ToResponseMarshaller }
 import akka.http.scaladsl.model._
-import akka.http.scaladsl.model.HttpMethods._
-import akka.http.scaladsl.model.StatusCodes.{ Created, OK }
+import akka.http.scaladsl.model.{ HttpMethods, StatusCodes }
 import akka.http.scaladsl.server._
 import akka.http.scaladsl.server.Directives._
-import akka.http.scaladsl.unmarshalling.Unmarshal
+import akka.http.scaladsl.unmarshalling.{ Unmarshal, FromRequestUnmarshaller }
 import akka.stream.{ ActorMaterializer, Materializer }
 import akka.stream.scaladsl.{ Flow, Sink, Source }
-import com.typesafe.config.Config
-import com.typesafe.config.ConfigFactory
+import com.typesafe.config.{ Config, ConfigFactory }
 import scala.concurrent.{ ExecutionContextExecutor, Future }
 import scala.io._
 import scala.io.StdIn
-import spray.json.DefaultJsonProtocol
+import spray.json._
 
 /** Domain model */
 final case class Invitation(invitee: String, email: String)
@@ -43,23 +42,39 @@ class InvitationDb extends Actor {
 
 /** Core service. Invokes ActorSystem, materializes Actor, orchestrates DSL routes, binds to server, terminates server.  */
 object Service extends App with InviterJsonProtocol with SprayJsonSupport {
+  import akka.pattern.ask
 
   implicit val system = ActorSystem("inviter-system")
   implicit val materializer = ActorMaterializer()
   implicit val executionContext = system.dispatcher
 
-  /** */
-  val route =
-    pathPrefix("test") {
-      get {
-        complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, "<h1>ALL OK</h1>"))
-      }
+  /**
+   * TODO:
+   * 1. Provide a RootJsonFormat[T] for your type and bring it into scope,
+   * 2. Learn from trait PredefinedToResponseMarshallers
+   * 3. Possibly productive:
+   * implicit val invitationUM: FromRequestUnmarshaller[Invitation] = ???
+   * implicit val invitationM: ToResponseMarshaller[Invitation] = ???
+   * implicit val invitationSeqM: ToResponseMarshaller[List[Invitation]] = ???
+   */
+
+  val route: Route =
+    path("order" / IntNumber) { invitation =>
+      get /*& entity(as[Invitation])*/ {
+        complete {
+          "Received GET request for order " + invitation
+        }
+      } ~
+        put {
+          complete /*& entity(as[Invitation])*/ {
+            "Received PUT request for order " + invitation
+          }
+        }
     }
 
   val binding = Http().bindAndHandle(route, "localhost", 8080)
 
-  println(s"Server online at http://localhost:8080/\nPress RETURN to stop...")
-  StdIn.readLine() // let it run until user presses return
+  println(s"Server running. Press any key to stop."); StdIn.readLine()
   binding
     .flatMap(_.unbind()) // trigger unbinding from the port
     .onComplete(_ => system.terminate()) // and shutdown when done

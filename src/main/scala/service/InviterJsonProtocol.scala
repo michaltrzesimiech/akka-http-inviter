@@ -1,3 +1,4 @@
+import spray.json._
 import spray.json.DefaultJsonProtocol
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
 
@@ -6,4 +7,3 @@ trait InviterJsonProtocol extends DefaultJsonProtocol with SprayJsonSupport {
   implicit val invitationFormat = jsonFormat2(Invitation)
   
 }
-
