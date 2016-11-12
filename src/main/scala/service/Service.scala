@@ -1,4 +1,9 @@
-/** Building version (with dummy route covering 2 endpoints, temporarily without DB Actor). */
+/**
+ * Building version;
+ * with partially defined route covering 2 endpoints;
+ * expedited configuration details to application.conf;
+ * with DB Actor.
+ */
 
 import akka.actor.ActorSystem
 import akka.actor.{ Actor, Props }
@@ -19,9 +24,11 @@ import scala.concurrent.{ ExecutionContextExecutor, Future }
 import scala.io._
 import scala.io.StdIn
 import spray.json._
+import spray.json.DefaultJsonProtocol
 
 /** Domain model */
-final case class Invitation(invitee: String, email: String)
+case class Invitation(invitee: String, email: String)
+object Invitation
 
 object InvitationDb {
   case class CreateInvitation(invitation: Invitation)
@@ -40,17 +47,29 @@ class InvitationDb extends Actor {
   }
 }
 
-/** Core service. Invokes ActorSystem, materializes Actor, orchestrates DSL routes, binds to server, terminates server.  */
-object Service extends App with InviterJsonProtocol with SprayJsonSupport {
-  import akka.pattern.ask
+///** Pulls in all implicit conversions to build JSON format instances, both RootJsonReader and RootJsonWriter. */
+//trait InviterJsonProtocol extends DefaultJsonProtocol with SprayJsonSupport {
+//  implicit val invitationFormat = jsonFormat2(Invitation.apply)
+//}
 
-  implicit val system = ActorSystem("inviter-system")
-  implicit val materializer = ActorMaterializer()
-  implicit val executionContext = system.dispatcher
+/** Pulls in all implicit conversions to build JSON format instances, both RootJsonReader and RootJsonWriter. */
+trait InviterJsonProtocol extends DefaultJsonProtocol with SprayJsonSupport {
+  implicit object InvitationJsonFromat extends RootJsonFormat[Invitation] {
+    implicit val invitationFormat = jsonFormat2(Invitation.apply)
+
+    def write(c: Invitation) =
+      JsArray(JsString(c.invitee), JsString(c.email))
+
+    def read(value: JsValue) = value match {
+      case JsArray(Vector(JsString(name), JsString(email))) =>
+        new Invitation(name, email)
+      case _ => deserializationError("Color expected")
+    }
+  }
 
   /**
    * TODO:
-   * 1. Provide a RootJsonFormat[T] for your type and bring it into scope,
+   * 1. Reduce unused boilerplate.
    * 2. Learn from trait PredefinedToResponseMarshallers
    * 3. Possibly productive:
    * implicit val invitationUM: FromRequestUnmarshaller[Invitation] = ???
@@ -58,21 +77,82 @@ object Service extends App with InviterJsonProtocol with SprayJsonSupport {
    * implicit val invitationSeqM: ToResponseMarshaller[List[Invitation]] = ???
    */
 
+}
+
+/** Core service. Invokes ActorSystem, materializes Actor, orchestrates DSL routes, binds to server, terminates server.  */
+object Service extends App with InviterJsonProtocol with SprayJsonSupport {
+  import akka.pattern.ask
+  import akka.util.Timeout
+  import akka.pattern.ask
+  import scala.concurrent.duration._
+  import scala.language.postfixOps
+
+  implicit val system = ActorSystem("inviter-system")
+  implicit val materializer = ActorMaterializer()
+  implicit val executionContext = system.dispatcher
+
+  val inviter = system.actorOf(Props[InvitationDb], "inviter")
+  implicit val timeout = Timeout(5 seconds)
+
   val route: Route =
-    path("order" / IntNumber) { invitation =>
-      get /*& entity(as[Invitation])*/ {
-        complete {
-          "Received GET request for order " + invitation
-        }
-      } ~
-        put {
-          complete /*& entity(as[Invitation])*/ {
-            "Received PUT request for order " + invitation
+    path("invitation") {
+      post {
+        entity(as[Invitation]) { invitation =>
+          complete {
+            invitation
+            // val futPost = (inviter ? InvitationDb.CreateSingleInvitation(invitation))
+            // complete(futPost)
           }
         }
+      } ~ get {
+        entity(as[List[Invitation]]) { invitation =>
+          val futGet: Future[List[Invitation]] = (inviter ? InvitationDb.FindAllInvitations).mapTo[List[Invitation]]
+          complete(futGet)
+        }
+      }
     }
 
-  val binding = Http().bindAndHandle(route, "localhost", 8080)
+  //  val route: Route =
+  //    path("invitation") {
+  //      get & entity(as[List[Invitation]]) { invitation =>
+  //        val futGet: Future[List[Invitation]] = (inviter ? InvitationDb.FindAllInvitations).mapTo[List[Invitation]]
+  //        complete(futGet)
+  //      } ~
+  //        path("invitation") {
+  //          post & entity(as[Invitation]) { invitation =>
+  //            val futPost = (inviter ? InvitationDb.CreateSingleInvitation(invitation))
+  //            complete(futPost)
+  //          }
+  //        }
+  //    }
+
+  //  val route =
+  //    path("invitation") {
+  //        post {
+  //          entity(as[Invitation]) { invitation =>
+  //            respondWithStatus(StatusCodes.OK) {
+  //              respondWithMediaType(`application/json`) {
+  //                inviter ? InvitationDb.FindAllInvitations).map[ToResponseMarshallable]
+  //              }
+  //      }
+  //    }
+
+  //  val route: Route =
+  //    path("invitation" / IntNumber) { invitation =>
+  //      get /*& entity(as[Invitation])*/ {
+  //        complete {
+  //          "Received GET request for order " + invitation
+  //        }
+  //      } ~
+  //        put {
+  //          complete /*& entity(as[Invitation])*/ {
+  //            "Received PUT request for order " + invitation
+  //          }
+  //        }
+  //    }
+
+  val config = ConfigFactory.load()
+  val binding = Http().bindAndHandle(route, config.getString("http.interface"), config.getInt("http.port"))
 
   println(s"Server running. Press any key to stop."); StdIn.readLine()
   binding
