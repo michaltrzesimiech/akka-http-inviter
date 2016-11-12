@@ -99,9 +99,9 @@ object Service extends App with InviterJsonProtocol with SprayJsonSupport {
       post {
         entity(as[Invitation]) { invitation =>
           complete {
-            invitation
-            // val futPost = (inviter ? InvitationDb.CreateSingleInvitation(invitation))
-            // complete(futPost)
+//            invitation
+             val futPost = (inviter ? InvitationDb.CreateSingleInvitation(invitation))
+             complete(futPost)
           }
         }
       } ~ get {
