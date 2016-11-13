@@ -3,3 +3,10 @@ sbt
 cd..
 sbt run
 cd..
+sbt compile
+sbt run
+sbt
+sbt boot
+sbt
+sbt compile
+sbt run

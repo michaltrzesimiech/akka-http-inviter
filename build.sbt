@@ -3,16 +3,22 @@ version       := "0.0.1"
 scalaVersion  := "2.11.8"
 scalacOptions := Seq("-unchecked", "-feature", "-deprecation", "-encoding", "utf8")
 
-resolvers += Resolver.jcenterRepo
 
-libraryDependencies ++=  Seq(
-                      "com.typesafe.akka"    %%    "akka-actor"                           % "2.4.12",
-                      "com.typesafe.akka"    %%    "akka-http-spray-json-experimental"    % "2.4.11",
-					  "com.typesafe.akka" 	 %%    "akka-stream" 						  % "2.4.12",
-					  "com.typesafe.akka" 	 %%    "akka-http-core" 					  % "2.4.11",
-					  "com.typesafe.akka" 	 %%    "akka-http-experimental" 			  % "2.4.11",
-                      "net.codingwell"       %%    "scala-guice"              			  % "4.1.0"
-)
+libraryDependencies ++= {
+  	val akkaVersion = "2.4.11"
+	Seq(
+      "com.typesafe.akka"    %%    "akka-actor"                           % akkaVersion,
+	  "com.typesafe.akka" 	 %%    "akka-http-core" 					  % akkaVersion,
+	  "com.typesafe.akka" 	 %%    "akka-http-experimental" 			  % akkaVersion,
+      "com.typesafe.akka"    %%    "akka-http-spray-json-experimental"    % akkaVersion,
+	  "com.typesafe.akka" 	 %%    "akka-stream" 						  % akkaVersion,
+      "com.typesafe.akka"	 %%    "akka-slf4j" 					 	  % akkaVersion,
+	  "com.typesafe.akka" 	 %%    "akka-testkit" 						  % akkaVersion,
+      "com.typesafe.akka" 	 %%    "akka-http-testkit" 					  % akkaVersion % Test,
+      "ch.qos.logback" 		 % 	   "logback-classic" 					  % "1.0.9",
+	  "org.scalactic" 		 %%    "scalactic" 							  % "3.0.0"		% Test,
+	  "org.scalatest" 		 %%    "scalatest" 							  % "3.0.0" 	% Test
+	)
+}
 
 fork in run := true
-
