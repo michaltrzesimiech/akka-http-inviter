@@ -4,7 +4,7 @@
 		module="inviter_2.11"
 		revision="0.0.1"
 		status="integration"
-		publication="20161113113622"
+		publication="20161113153014"
 	>
 		<description>
 		inviter
@@ -44,7 +44,7 @@
 		<dependency org="com.typesafe.akka" name="akka-testkit_2.11" rev="2.4.11" conf="compile->default(compile)"/>
 		<dependency org="com.typesafe.akka" name="akka-http-testkit_2.11" rev="2.4.11" conf="test->default(compile)"/>
 		<dependency org="ch.qos.logback" name="logback-classic" rev="1.0.9" conf="compile->default(compile)"/>
-		<dependency org="org.scalactic" name="scalactic_2.11" rev="3.0.0" conf="test->default(compile)"/>
+		<dependency org="org.scalactic" name="scalactic_2.11" rev="3.0.0" conf="compile->default(compile)"/>
 		<dependency org="org.scalatest" name="scalatest_2.11" rev="3.0.0" conf="test->default(compile)"/>
 	</dependencies>
 </ivy-module>

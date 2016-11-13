@@ -1,1 +1,8 @@
 [0m[[0mdebug[0m] [0mjavaOptions: List()[0m
+[0m[[0minfo[0m] [0mRunning InviterServer [0m
+[0m[[0minfo[0m] [0m[DEBUG] [11/13/2016 15:49:07.863] [main] [EventStream(akka://default)] logger log1-Logging$DefaultLogger started[0m
+[0m[[0minfo[0m] [0m[DEBUG] [11/13/2016 15:49:07.863] [main] [EventStream(akka://default)] Default Loggers started[0m
+[0m[[0minfo[0m] [0m[DEBUG] [11/13/2016 15:49:07.953] [main] [AkkaSSLConfig(akka://default)] Initializing AkkaSSLConfig extension...[0m
+[0m[[0minfo[0m] [0m[DEBUG] [11/13/2016 15:49:07.953] [main] [AkkaSSLConfig(akka://default)] buildHostnameVerifier: created hostname verifier: com.typesafe.sslconfig.ssl.DefaultHostnameVerifier@1fb8912[0m
+[0m[[0minfo[0m] [0mServer running. Press any key to stop.[0m
+[0m[[0minfo[0m] [0m[DEBUG] [11/13/2016 15:49:09.006] [default-akka.actor.default-dispatcher-4] [akka://default/system/IO-TCP/selectors/$a/0] Successfully bound to /127.0.0.1:8099[0m

@@ -14,11 +14,13 @@ libraryDependencies ++= {
 	  "com.typesafe.akka" 	 %%    "akka-stream" 						  % akkaVersion,
       "com.typesafe.akka"	 %%    "akka-slf4j" 					 	  % akkaVersion,
 	  "com.typesafe.akka" 	 %%    "akka-testkit" 						  % akkaVersion,
-      "com.typesafe.akka" 	 %%    "akka-http-testkit" 					  % akkaVersion % Test,
+      "com.typesafe.akka" 	 %%    "akka-http-testkit" 					  % akkaVersion % "test",
       "ch.qos.logback" 		 % 	   "logback-classic" 					  % "1.0.9",
-	  "org.scalactic" 		 %%    "scalactic" 							  % "3.0.0"		% Test,
-	  "org.scalatest" 		 %%    "scalatest" 							  % "3.0.0" 	% Test
+	  "org.scalactic" 		 %%    "scalactic" 							  % "3.0.0",
+	  "org.scalatest" 		 %%    "scalatest" 							  % "3.0.0" 	% "test"
 	)
 }
 
 fork in run := true
+
+connectInput in run := true

@@ -92,6 +92,11 @@
       <attribute name="javadoc_location" value="jar:file:C:\Users\Work\.ivy2\cache\ch.qos.logback\logback-core\docs\logback-core-1.0.9-javadoc.jar!/"/>
     </attributes>
   </classpathentry>
+  <classpathentry sourcepath="C:\Users\Work\.ivy2\cache\org.scalactic\scalactic_2.11\srcs\scalactic_2.11-3.0.0-sources.jar" kind="lib" path="C:\Users\Work\.ivy2\cache\org.scalactic\scalactic_2.11\bundles\scalactic_2.11-3.0.0.jar">
+    <attributes>
+      <attribute name="javadoc_location" value="jar:file:C:\Users\Work\.ivy2\cache\org.scalactic\scalactic_2.11\docs\scalactic_2.11-3.0.0-javadoc.jar!/"/>
+    </attributes>
+  </classpathentry>
   <classpathentry sourcepath="C:\Users\Work\.ivy2\cache\com.typesafe.akka\akka-http-testkit_2.11\srcs\akka-http-testkit_2.11-2.4.11-sources.jar" kind="lib" path="C:\Users\Work\.ivy2\cache\com.typesafe.akka\akka-http-testkit_2.11\jars\akka-http-testkit_2.11-2.4.11.jar">
     <attributes>
       <attribute name="javadoc_location" value="jar:file:C:\Users\Work\.ivy2\cache\com.typesafe.akka\akka-http-testkit_2.11\docs\akka-http-testkit_2.11-2.4.11-javadoc.jar!/"/>
@@ -100,11 +105,6 @@
   <classpathentry sourcepath="C:\Users\Work\.ivy2\cache\com.typesafe.akka\akka-stream-testkit_2.11\srcs\akka-stream-testkit_2.11-2.4.11-sources.jar" kind="lib" path="C:\Users\Work\.ivy2\cache\com.typesafe.akka\akka-stream-testkit_2.11\jars\akka-stream-testkit_2.11-2.4.11.jar">
     <attributes>
       <attribute name="javadoc_location" value="jar:file:C:\Users\Work\.ivy2\cache\com.typesafe.akka\akka-stream-testkit_2.11\docs\akka-stream-testkit_2.11-2.4.11-javadoc.jar!/"/>
-    </attributes>
-  </classpathentry>
-  <classpathentry sourcepath="C:\Users\Work\.ivy2\cache\org.scalactic\scalactic_2.11\srcs\scalactic_2.11-3.0.0-sources.jar" kind="lib" path="C:\Users\Work\.ivy2\cache\org.scalactic\scalactic_2.11\bundles\scalactic_2.11-3.0.0.jar">
-    <attributes>
-      <attribute name="javadoc_location" value="jar:file:C:\Users\Work\.ivy2\cache\org.scalactic\scalactic_2.11\docs\scalactic_2.11-3.0.0-javadoc.jar!/"/>
     </attributes>
   </classpathentry>
   <classpathentry sourcepath="C:\Users\Work\.ivy2\cache\org.scalatest\scalatest_2.11\srcs\scalatest_2.11-3.0.0-sources.jar" kind="lib" path="C:\Users\Work\.ivy2\cache\org.scalatest\scalatest_2.11\bundles\scalatest_2.11-3.0.0.jar">

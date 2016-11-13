@@ -10,3 +10,6 @@ sbt boot
 sbt
 sbt compile
 sbt run
+sbt update
+sbt run
+sbt

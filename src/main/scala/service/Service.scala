@@ -11,14 +11,15 @@ import akka.http.scaladsl.unmarshalling.{ Unmarshal, FromRequestUnmarshaller }
 import akka.stream.{ ActorMaterializer, Materializer }
 import akka.stream.scaladsl.{ Flow, Sink, Source }
 import com.typesafe.config.{ Config, ConfigFactory }
-import scala.concurrent.{ ExecutionContextExecutor, Future }
 import scala.io.StdIn
 import spray.json._
 import spray.json.DefaultJsonProtocol
 
+/** Domain model */
 case class Invitation(invitee: String, email: String)
 object Invitation
 
+/** Pulls in implicit conversions to build JSON instances */
 trait InviterJsonProtocol extends DefaultJsonProtocol with SprayJsonSupport {
   implicit val invitationFormat = jsonFormat2(Invitation.apply)
 }
