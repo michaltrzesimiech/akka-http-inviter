@@ -59,7 +59,7 @@ For **POST**, i.e.: ```curl -v -H "Content-Type: application/json" -X POST http:
 < Content-Type: application/json
 < Content-Length: 55
 <
-[{"invitee":"John Smith","email":"john@smith.mx"}]* Curl_http_done: called premature == 0
+[{"invitee":"Colonel Sanders","email":"colonel@kfc.sad"}]* Curl_http_done: called premature == 0
 * Connection #0 to host 127.0.0.1 left intact
 ```
 
@@ -88,6 +88,9 @@ For **POST**, i.e.: ```curl -v -H "Content-Type: application/json" -X POST http:
 The route would then have to look like this:
 
 ```
+  val invitation0 = Invitation("John Smith", "john@smith.mx")
+  var invitations: List[Invitation] = List(invitation0)
+
   def routes: Route = {
     pathPrefix("invitation") {
       get {
