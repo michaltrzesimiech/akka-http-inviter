@@ -1,0 +1,3 @@
+[0m[[0minfo[0m] [0m[32mInviterRoutesTest:[0m[0m
+[0m[[0minfo[0m] [0m[32m- GET requests to the path /invitation[0m[0m
+[0m[[0minfo[0m] [0m[32m- POST requests to the path /invitation[0m[0m
