@@ -18,7 +18,7 @@ Delivered to Evojam as a recruitment challenge. Based on requirements sent by em
 
 [curl Win32 package]: https://curl.haxx.se/download.html
 
-1. For **GET**: ```curl -v 127.0.0.1:8099/invitation ```, which results in
+For **GET**: ```curl -v 127.0.0.1:8099/invitation ```, which results in
 
 ``` 
 *   Trying 127.0.0.1...
@@ -39,7 +39,7 @@ Delivered to Evojam as a recruitment challenge. Based on requirements sent by em
 * Connection #0 to host 127.0.0.1 left intact
 ```
 
-2. For unspecified **POST**: ```curl -v -X POST 127.0.0.1:8099/invitation```, which results in: 
+For unspecified **POST**: ```curl -v -X POST 127.0.0.1:8099/invitation```, which results in: 
 
 ```
 *   Trying 127.0.0.1...
@@ -55,9 +55,11 @@ Delivered to Evojam as a recruitment challenge. Based on requirements sent by em
 < Date: Sun, 13 Nov 2016 19:15:53 GMT
 < Content-Type: application/json
 < Content-Length: 50
+[{"invitee":"John Smith","email":"john@smith.mx"}]* Curl_http_done: called premature == 0
+* Connection #0 to host 127.0.0.1 left intact
 ```
 
-3. For specified **POST**, i.e.: ```curl -v -H "Content-Type: application/json" -X POST http://127.0.0.1:8099/invitation -d '{"""invitee""":"""Colonel Sanders""", """email""": """colonel@kfc.sad"""}'```, which results in:
+For specified **POST**, i.e.: ```curl -v -H "Content-Type: application/json" -X POST http://127.0.0.1:8099/invitation -d '{"""invitee""":"""Colonel Sanders""", """email""": """colonel@kfc.sad"""}'```, which results in:
 
 ```
 *   Trying 127.0.0.1...
@@ -77,7 +79,7 @@ Delivered to Evojam as a recruitment challenge. Based on requirements sent by em
 < Content-Type: application/json
 < Content-Length: 55
 <
-{"invitee":"Colonel Sanders","email":"colonel@kfc.sad"}* Curl_http_done: called premature == 0
+[{"invitee":"John Smith","email":"john@smith.mx"}]* Curl_http_done: called premature == 0
 * Connection #0 to host 127.0.0.1 left intact
 ```
 
