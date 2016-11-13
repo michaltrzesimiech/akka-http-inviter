@@ -63,7 +63,9 @@ For **POST**, i.e.: ```curl -v -H "Content-Type: application/json" -X POST http:
 * Connection #0 to host 127.0.0.1 left intact
 ```
 
-- There could have been an additional scenario servicing unspecified POST call like: ```curl -v -X POST 127.0.0.1:8099/invitation```, which results in: 
+
+
+- There could have been an additional scenario servicing unspecified POST call like: ```curl -v -X POST 127.0.0.1:8099/invitation```, which would result in: 
 
 ```
 *   Trying 127.0.0.1...
@@ -83,7 +85,7 @@ For **POST**, i.e.: ```curl -v -H "Content-Type: application/json" -X POST http:
 * Connection #0 to host 127.0.0.1 left intact
 ```
 
-The route would then look like this:
+The route would then have to look like this:
 
 ```
   def routes: Route = {
@@ -116,6 +118,7 @@ Similarly, there could've been just 1 POST scenario to imitate the result, but I
       }
   }
 ```
+
 
 
 - The ```Content-Type: application/json``` does not print as ```application/json;charset=utf-8```, but according to [RFC7158]:
