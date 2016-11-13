@@ -14,11 +14,11 @@ Delivered to Evojam as a recruitment challenge. Based on requirements sent by em
 
 ### Details
 
-- There are 3 queries that I used to test all 3 routes manually.
+- There are 2 queries that I used to test both routes manually.
 
 [curl Win32 package]: https://curl.haxx.se/download.html
 
-For **GET**: ```curl -v 127.0.0.1:8099/invitation ```, which results in
+For **GET**: ```curl -v 127.0.0.1:8099/invitation```, which results in
 
 ``` 
 *   Trying 127.0.0.1...
@@ -39,27 +39,7 @@ For **GET**: ```curl -v 127.0.0.1:8099/invitation ```, which results in
 * Connection #0 to host 127.0.0.1 left intact
 ```
 
-For unspecified **POST**: ```curl -v -X POST 127.0.0.1:8099/invitation```, which results in: 
-
-```
-*   Trying 127.0.0.1...
-* TCP_NODELAY set
-* Connected to 127.0.0.1 (127.0.0.1) port 8099 (#0)
-> POST /invitation HTTP/1.1
-> Host: 127.0.0.1:8099
-> User-Agent: curl/7.51.0
-> Accept: */*
->
-< HTTP/1.1 200 OK
-< Server: akka-http/2.4.11
-< Date: Sun, 13 Nov 2016 19:15:53 GMT
-< Content-Type: application/json
-< Content-Length: 50
-[{"invitee":"John Smith","email":"john@smith.mx"}]* Curl_http_done: called premature == 0
-* Connection #0 to host 127.0.0.1 left intact
-```
-
-For specified **POST**, i.e.: ```curl -v -H "Content-Type: application/json" -X POST http://127.0.0.1:8099/invitation -d '{"""invitee""":"""Colonel Sanders""", """email""": """colonel@kfc.sad"""}'```, which results in:
+For **POST**, i.e.: ```curl -v -H "Content-Type: application/json" -X POST http://127.0.0.1:8099/invitation -d '{"""invitee""":"""Colonel Sanders""", """email""": """colonel@kfc.sad"""}'```, which results in:
 
 ```
 *   Trying 127.0.0.1...
@@ -83,8 +63,44 @@ For specified **POST**, i.e.: ```curl -v -H "Content-Type: application/json" -X 
 * Connection #0 to host 127.0.0.1 left intact
 ```
 
+- There could have been an additional scenario servicing unspecified POST call like: ```curl -v -X POST 127.0.0.1:8099/invitation```, which results in: 
 
-- There could've been just 1 scenario for POST, but #2 wasn't really functional and I decided to go with #3 as an option. To just imitate the required result with ```curl -v -X POST 127.0.0.1:8099/invitation``` for POST and ```curl -v 127.0.0.1:8099/invitation``` for GET, the route could have been as simple as this:
+```
+*   Trying 127.0.0.1...
+* TCP_NODELAY set
+* Connected to 127.0.0.1 (127.0.0.1) port 8099 (#0)
+> POST /invitation HTTP/1.1
+> Host: 127.0.0.1:8099
+> User-Agent: curl/7.51.0
+> Accept: */*
+>
+< HTTP/1.1 200 OK
+< Server: akka-http/2.4.11
+< Date: Sun, 13 Nov 2016 19:15:53 GMT
+< Content-Type: application/json
+< Content-Length: 50
+[{"invitee":"John Smith","email":"john@smith.mx"}]* Curl_http_done: called premature == 0
+* Connection #0 to host 127.0.0.1 left intact
+```
+
+The route would then look like this:
+
+```
+  def routes: Route = {
+    pathPrefix("invitation") {
+      get {
+        complete(invitations.head)
+      }
+    } ~
+      post {
+        entity(as[JsValue]) { invitation =>
+          complete(invitation)
+        } 
+      } ~ complete(invitations)
+  }
+```
+
+Similarly, there could've been just 1 POST scenario to imitate the result, but I made it into a moving part for functional reasons. To just imitate the required result with ```curl -v -X POST 127.0.0.1:8099/invitation``` and ```curl -v 127.0.0.1:8099/invitation``` for GET, the route could have been as simple as this:
 
 ```
   val sample = Invitation("John Smith", "john@smith.mx")
@@ -111,7 +127,7 @@ For specified **POST**, i.e.: ```curl -v -H "Content-Type: application/json" -X 
 
 ### Thanks
 
-Thank you for the challenge. I do hope this work has met your expectations. In case of suggestions of questions, I'm looking forward to hear from you at any time.
+Thank you for the challenge. I do hope this work has met your expectations. In case of suggestions or questions, I'm looking forward to hear from you at any time.
 
 Best regards, 
 

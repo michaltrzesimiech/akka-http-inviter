@@ -1,12 +1,13 @@
 [0m[[0mdebug[0m] [0mjavaOptions: List()[0m
 [0m[[0minfo[0m] [0mRunning InviterServer [0m
-[0m[[0minfo[0m] [0m[DEBUG] [11/13/2016 21:08:35.578] [main] [EventStream(akka://default)] logger log1-Logging$DefaultLogger started[0m
-[0m[[0minfo[0m] [0m[DEBUG] [11/13/2016 21:08:35.578] [main] [EventStream(akka://default)] Default Loggers started[0m
-[0m[[0minfo[0m] [0m[DEBUG] [11/13/2016 21:08:35.658] [main] [AkkaSSLConfig(akka://default)] Initializing AkkaSSLConfig extension...[0m
-[0m[[0minfo[0m] [0m[DEBUG] [11/13/2016 21:08:35.658] [main] [AkkaSSLConfig(akka://default)] buildHostnameVerifier: created hostname verifier: com.typesafe.sslconfig.ssl.DefaultHostnameVerifier@1fb8912[0m
+[0m[[0minfo[0m] [0m[DEBUG] [11/13/2016 22:20:11.664] [main] [EventStream(akka://default)] logger log1-Logging$DefaultLogger started[0m
+[0m[[0minfo[0m] [0m[DEBUG] [11/13/2016 22:20:11.664] [main] [EventStream(akka://default)] Default Loggers started[0m
+[0m[[0minfo[0m] [0m[DEBUG] [11/13/2016 22:20:11.764] [main] [AkkaSSLConfig(akka://default)] Initializing AkkaSSLConfig extension...[0m
+[0m[[0minfo[0m] [0m[DEBUG] [11/13/2016 22:20:11.764] [main] [AkkaSSLConfig(akka://default)] buildHostnameVerifier: created hostname verifier: com.typesafe.sslconfig.ssl.DefaultHostnameVerifier@1fb8912[0m
 [0m[[0minfo[0m] [0mServer running. Press any key to stop.[0m
-[0m[[0minfo[0m] [0m[DEBUG] [11/13/2016 21:08:37.206] [default-akka.actor.default-dispatcher-3] [akka://default/system/IO-TCP/selectors/$a/0] Successfully bound to /127.0.0.1:8099[0m
-[0m[[0minfo[0m] [0m[DEBUG] [11/13/2016 21:08:46.836] [default-akka.actor.default-dispatcher-5] [akka://default/system/IO-TCP/selectors/$a/0] New connection accepted[0m
-[0m[[0minfo[0m] [0m[DEBUG] [11/13/2016 21:08:54.491] [default-akka.actor.default-dispatcher-5] [akka://default/system/IO-TCP/selectors/$a/0] New connection accepted[0m
-[0m[[0minfo[0m] [0m[DEBUG] [11/13/2016 21:09:04.628] [default-akka.actor.default-dispatcher-2] [akka://default/system/IO-TCP/selectors/$a/0] New connection accepted[0m
-[0m[[0minfo[0m] [0m[DEBUG] [11/13/2016 21:09:05.754] [default-akka.actor.default-dispatcher-5] [akka://default/system/IO-TCP/selectors/$a/0] New connection accepted[0m
+[0m[[0minfo[0m] [0m[DEBUG] [11/13/2016 22:20:12.985] [default-akka.actor.default-dispatcher-4] [akka://default/system/IO-TCP/selectors/$a/0] Successfully bound to /127.0.0.1:8099[0m
+[0m[[0minfo[0m] [0m[DEBUG] [11/13/2016 22:20:14.343] [default-akka.actor.default-dispatcher-4] [akka://default/system/IO-TCP/selectors/$a/0] New connection accepted[0m
+[0m[[0minfo[0m] [0m[DEBUG] [11/13/2016 22:20:17.283] [default-akka.actor.default-dispatcher-2] [akka://default/system/IO-TCP/selectors/$a/0] New connection accepted[0m
+[0m[[0minfo[0m] [0m[DEBUG] [11/13/2016 22:20:20.319] [default-akka.actor.default-dispatcher-7] [akka://default/system/IO-TCP/selectors/$a/0] New connection accepted[0m
+[0m[[0minfo[0m] [0m[DEBUG] [11/13/2016 22:20:22.786] [default-akka.actor.default-dispatcher-2] [akka://default/system/IO-TCP/selectors/$a/0] New connection accepted[0m
+[0m[[0minfo[0m] [0m[DEBUG] [11/13/2016 22:20:30.179] [default-akka.actor.default-dispatcher-5] [akka://default/system/IO-TCP/selectors/$a/0] New connection accepted[0m

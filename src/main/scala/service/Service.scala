@@ -40,9 +40,9 @@ object InviterRoutes extends InviterJsonProtocol with SprayJsonSupport {
     } ~
       post {
         entity(as[JsValue]) { invitation =>
-          complete(invitation)
-        } 
-      } ~ complete(invitations)
+          complete(List(invitation))
+        }
+      }
   }
 
   /** Invokes ActorSystem, materializes Actor, binds routes to server, gracefully shuts down on user action.  */
