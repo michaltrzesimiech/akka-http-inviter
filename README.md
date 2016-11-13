@@ -83,6 +83,7 @@ For specified **POST**, i.e.: ```curl -v -H "Content-Type: application/json" -X 
 * Connection #0 to host 127.0.0.1 left intact
 ```
 
+
 - There could've been just 1 scenario for POST, but #2 wasn't really functional and I decided to go with #3 as an option. To just imitate the required result with ```curl -v -X POST 127.0.0.1:8099/invitation``` for POST and ```curl -v 127.0.0.1:8099/invitation``` for GET, the route could have been as simple as this:
 
 ```
@@ -99,6 +100,7 @@ For specified **POST**, i.e.: ```curl -v -H "Content-Type: application/json" -X 
       }
   }
 ```
+
 
 - The ```Content-Type: application/json``` does not print as ```application/json;charset=utf-8```, but according to [RFC7158]:
 
