@@ -1,3 +1,5 @@
+/** @author: Michal Trzesimiech for Evojam */
+
 import akka.actor.ActorSystem
 import akka.event.{ LoggingAdapter, Logging }
 import akka.http.scaladsl.Http
@@ -26,18 +28,21 @@ trait InviterJsonProtocol extends DefaultJsonProtocol with SprayJsonSupport {
 
 object InviterRoutes extends InviterJsonProtocol with SprayJsonSupport {
 
-  var example = Invitation("John Smith", "john@smith.mx")
+  val invitation0 = Invitation("John Smith", "john@smith.mx")
+  var invitations: List[Invitation] = List(invitation0)
 
   /** DSL routes */
   def routes: Route = {
     pathPrefix("invitation") {
       get {
-        complete(example)
+        complete(invitations.head)
       }
     } ~
       post {
-        complete(example)
-      }
+        entity(as[JsValue]) { invitation =>
+          complete(invitation)
+        } 
+      } ~ complete(invitations)
   }
 
   /** Invokes ActorSystem, materializes Actor, binds routes to server, gracefully shuts down on user action.  */
