@@ -1,6 +1,7 @@
 /** @author: Michal Trzesimiech for Evojam */
 
 import akka.actor.ActorSystem
+import akka.Done
 import akka.event.{ LoggingAdapter, Logging }
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
@@ -13,6 +14,7 @@ import akka.http.scaladsl.unmarshalling.{ Unmarshal, FromRequestUnmarshaller }
 import akka.stream.{ ActorMaterializer, Materializer }
 import akka.stream.scaladsl.{ Flow, Sink, Source }
 import com.typesafe.config.{ Config, ConfigFactory }
+import scala.concurrent.Future
 import scala.io.StdIn
 import spray.json._
 import spray.json.DefaultJsonProtocol
@@ -29,23 +31,28 @@ trait InviterJsonProtocol extends DefaultJsonProtocol with SprayJsonSupport {
 object InviterRoutes extends InviterJsonProtocol with SprayJsonSupport {
 
   val invitation0 = Invitation("John Smith", "john@smith.mx")
-  var invitations: List[Invitation] = List(invitation0)
+  var invitations: Seq[Invitation] = List(invitation0)
+
+  def saveInvitation(invitation: Invitation) = {
+    invitations = invitations :+ invitation
+    invitations.last
+  }
 
   /** DSL routes */
   def routes: Route = {
     pathPrefix("invitation") {
       get {
-        complete(invitations.head)
+        complete(invitations.toJson)
       }
     } ~
       post {
-        entity(as[JsValue]) { invitation =>
-          complete(List(invitation))
+        entity(as[Invitation]) { invitation =>
+          complete(saveInvitation(invitation))
         }
       }
   }
 
-  /** Invokes ActorSystem, materializes Actor, binds routes to server, gracefully shuts down on user action.  */
+  /** Invokes ActorSystem, materializes Actor, binds routes to server, gracefully shuts down on user action. */
   def run: Unit = {
     implicit val system = ActorSystem()
     implicit val materializer = ActorMaterializer()

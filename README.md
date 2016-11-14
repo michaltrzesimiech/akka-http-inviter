@@ -6,44 +6,21 @@ Delivered to Evojam as a recruitment challenge. Based on requirements sent by em
 
 ## How it's made
 
-- Based on **high-level server-side Akka HTTP API** as the most productive, concise and readable solution to deliver on the requirements.
+- Based on **high-level server-side Akka HTTP API** as the most productive and concise solution to deliver on the requirements.
 
-- Since I have chosen to go with bare minimum, I also decided to keep all the code in a single file for increased readability.
+- Since I went with bare minimum, I also decided to keep all the code in a single file for compactness.
 
-- There is actually another file in ```src/test/scala```. It covers basic checks against the DSL routes. It can be run with  ```sbt test```.
+- There are tests available under ```src/test/scala```, covering basic checks against the DSL routes.
 
 ### Details
 
-- There are 2 queries that I used to test both routes manually.
+- There are 2 curl queries that I used to test the routes manually (via PowerShell 2 and [curl]).
 
-[curl Win32 package]: https://curl.haxx.se/download.html
-
-For **GET**: ```curl -v 127.0.0.1:8099/invitation```, which results in
-
-``` 
-*   Trying 127.0.0.1...
-* TCP_NODELAY set
-* Connected to 127.0.0.1 (127.0.0.1) port 8099 (#0)
-> GET /invitation HTTP/1.1
-> Host: 127.0.0.1:8099
-> User-Agent: curl/7.51.0
-> Accept: */*
->
-< HTTP/1.1 200 OK
-< Server: akka-http/2.4.11
-< Date: Sun, 13 Nov 2016 19:16:01 GMT
-< Content-Type: application/json
-< Content-Length: 48
-<
-{"invitee":"John Smith","email":"john@smith.mx"}* Curl_http_done: called premature == 0
-* Connection #0 to host 127.0.0.1 left intact
-```
+[curl]: https://curl.haxx.se/download.html
 
 For **POST**, i.e.: ```curl -v -H "Content-Type: application/json" -X POST http://127.0.0.1:8099/invitation -d '{"""invitee""":"""Colonel Sanders""", """email""": """colonel@kfc.sad"""}'```, which results in:
 
 ```
-*   Trying 127.0.0.1...
-* TCP_NODELAY set
 * Connected to 127.0.0.1 (127.0.0.1) port 8099 (#0)
 > POST /invitation HTTP/1.1
 > Host: 127.0.0.1:8099
@@ -55,57 +32,34 @@ For **POST**, i.e.: ```curl -v -H "Content-Type: application/json" -X POST http:
 * upload completely sent off: 57 out of 57 bytes
 < HTTP/1.1 200 OK
 < Server: akka-http/2.4.11
-< Date: Sun, 13 Nov 2016 19:15:47 GMT
+< Date: Mon, 14 Nov 2016 18:45:41 GMT
 < Content-Type: application/json
 < Content-Length: 55
 <
-[{"invitee":"Colonel Sanders","email":"colonel@kfc.sad"}]* Curl_http_done: called premature == 0
-* Connection #0 to host 127.0.0.1 left intact
+{"invitee":"Colonel Sanders","email":"colonel@kfc.sad"}* Curl_http_done: called premature == 0
 ```
 
+For **GET**: ```curl -v 127.0.0.1:8099/invitation```, which results in
 
-
-- There could have been an additional scenario servicing unspecified POST call like: ```curl -v -X POST 127.0.0.1:8099/invitation```, which would result in: 
-
-```
-*   Trying 127.0.0.1...
-* TCP_NODELAY set
+``` 
 * Connected to 127.0.0.1 (127.0.0.1) port 8099 (#0)
-> POST /invitation HTTP/1.1
+> GET /invitation HTTP/1.1
 > Host: 127.0.0.1:8099
 > User-Agent: curl/7.51.0
 > Accept: */*
 >
 < HTTP/1.1 200 OK
 < Server: akka-http/2.4.11
-< Date: Sun, 13 Nov 2016 19:15:53 GMT
+< Date: Mon, 14 Nov 2016 18:47:08 GMT
 < Content-Type: application/json
-< Content-Length: 50
-[{"invitee":"John Smith","email":"john@smith.mx"}]* Curl_http_done: called premature == 0
+< Content-Length: 106
+<
+[{"invitee":"John Smith","email":"john@smith.mx"},{"invitee":"Colonel Sanders","email":"colonel@kfc.sad"}]* Curl_http_do
+ne: called premature == 0
 * Connection #0 to host 127.0.0.1 left intact
 ```
 
-The route would then have to look like this:
-
-```
-  val invitation0 = Invitation("John Smith", "john@smith.mx")
-  var invitations: List[Invitation] = List(invitation0)
-
-  def routes: Route = {
-    pathPrefix("invitation") {
-      get {
-        complete(invitations.head)
-      }
-    } ~
-      post {
-        entity(as[JsValue]) { invitation =>
-          complete(invitation)
-        } 
-      } ~ complete(invitations)
-  }
-```
-
-Similarly, there could've been just 1 POST scenario to imitate the result, but I made it into a moving part for functional reasons. To just imitate the required result with ```curl -v -X POST 127.0.0.1:8099/invitation``` and ```curl -v 127.0.0.1:8099/invitation``` for GET, the route could have been as simple as this:
+- To just imitate the required result with ```curl -v -X POST 127.0.0.1:8099/invitation``` and ```curl -v 127.0.0.1:8099/invitation```, the route could have been as simple as this:
 
 ```
   val sample = Invitation("John Smith", "john@smith.mx")
@@ -113,16 +67,14 @@ Similarly, there could've been just 1 POST scenario to imitate the result, but I
    def routes: Route = {
     path("invitation") {
       get {
-        complete(sample)
+        complete(List(sample))
       }
     } ~
       post {
-        complete(List(sample))
+        complete(sample)
       }
   }
 ```
-
-
 
 - The ```Content-Type: application/json``` does not print as ```application/json;charset=utf-8```, but according to [RFC7158]:
 
