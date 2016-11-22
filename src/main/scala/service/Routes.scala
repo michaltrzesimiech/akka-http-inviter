@@ -1,4 +1,4 @@
-/** @author: Michal Trzesimiech for Evojam */
+package inviter
 
 import akka.actor.ActorSystem
 import akka.Done
@@ -19,35 +19,17 @@ import scala.io.StdIn
 import spray.json._
 import spray.json.DefaultJsonProtocol
 
-/** Domain model */
-case class Invitation(invitee: String, email: String)
-object Invitation
-
-/** Pulls in implicit conversions to build JSON instances */
-trait InviterJsonProtocol extends DefaultJsonProtocol with SprayJsonSupport {
-  implicit val invitationFormat = jsonFormat2(Invitation.apply)
-}
-
 object InviterRoutes extends InviterJsonProtocol with SprayJsonSupport {
 
-  val invitation0 = Invitation("John Smith", "john@smith.mx")
-  var invitations: Seq[Invitation] = List(invitation0)
-
-  def saveInvitation(invitation: Invitation) = {
-    invitations = invitations :+ invitation
-    invitations.last
-  }
-
-  /** DSL routes */
   def routes: Route = {
     pathPrefix("invitation") {
       get {
-        complete(invitations.toJson)
+        complete(DAO.invitations.toJson)
       }
     } ~
       post {
         entity(as[Invitation]) { invitation =>
-          complete(saveInvitation(invitation))
+          completeDAO..saveInvitation(invitation))
         }
       }
   }
@@ -62,7 +44,7 @@ object InviterRoutes extends InviterJsonProtocol with SprayJsonSupport {
     val log = Logging(system, getClass)
 
     val binding = Http().bindAndHandle(routes, config.getString("http.interface"), config.getInt("http.port"))
-    println(s"Server running. Press any key to stop."); StdIn.readLine()
+    println(s"Server running. Press RETURN to stop."); StdIn.readLine()
     binding
       .flatMap(_.unbind())
       .onComplete(_ => system.terminate())

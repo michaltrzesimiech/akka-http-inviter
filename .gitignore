@@ -1,1 +1,7 @@
 /bin/
+/target/
+.settings
+/project/project
+/project/target
+/.cache-main
+/.cache-tests
