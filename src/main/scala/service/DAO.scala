@@ -10,4 +10,8 @@ object DAO {
     invitations = invitations :+ invitation
     invitations.last
   }
+
+  def showLastInvitation = {
+    invitations.last
+  }
 }

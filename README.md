@@ -1,24 +1,9 @@
-# Inviter
+# akka-http-inviter
 
-Delivered to Evojam as a recruitment challenge. Based on requirements sent by email and gathered in this [document] for convenience. This is a bare minimum version of the specified service.
+- An example service based on **high-level server-side Akka HTTP API**. 
+- Serves 2 endpoints:
 
-[document]: https://docs.google.com/document/d/1y25ZUjLjdCZAvolD0Ah5jmb7rgpbkHKjqPkQEsJoTO0/edit
-
-## How it's made
-
-- Based on **high-level server-side Akka HTTP API** as the most productive and concise solution to deliver on the requirements.
-
-- Since I went with bare minimum, I also decided to keep all the code in a single file for compactness.
-
-- There are tests available under ```src/test/scala```, covering basic checks against the DSL routes.
-
-### Details
-
-- There are 2 curl queries that I used to test the routes manually (via PowerShell 2 and [curl]).
-
-[curl]: https://curl.haxx.se/download.html
-
-For **POST**, i.e.: ```curl -v -H "Content-Type: application/json" -X POST http://127.0.0.1:8099/invitation -d '{"""invitee""":"""Colonel Sanders""", """email""": """colonel@kfc.sad"""}'```, which results in:
+**POST**, i.e.: ```curl -v -H "Content-Type: application/json" -X POST http://127.0.0.1:8099/invitation -d '{"""invitee""":"""Colonel Sanders""", """email""": """colonel@kfc.sad"""}'```:
 
 ```
 * Connected to 127.0.0.1 (127.0.0.1) port 8099 (#0)
@@ -39,7 +24,7 @@ For **POST**, i.e.: ```curl -v -H "Content-Type: application/json" -X POST http:
 {"invitee":"Colonel Sanders","email":"colonel@kfc.sad"}* Curl_http_done: called premature == 0
 ```
 
-For **GET**: ```curl -v 127.0.0.1:8099/invitation```, which results in
+**GET**, i.e. ```curl -v 127.0.0.1:8099/invitation```:
 
 ``` 
 * Connected to 127.0.0.1 (127.0.0.1) port 8099 (#0)
@@ -58,35 +43,3 @@ For **GET**: ```curl -v 127.0.0.1:8099/invitation```, which results in
 ne: called premature == 0
 * Connection #0 to host 127.0.0.1 left intact
 ```
-
-- To just imitate the required result with ```curl -v -X POST 127.0.0.1:8099/invitation``` and ```curl -v 127.0.0.1:8099/invitation```, the route could have been as simple as this:
-
-```
-  val sample = Invitation("John Smith", "john@smith.mx")
-  
-   def routes: Route = {
-    path("invitation") {
-      get {
-        complete(List(sample))
-      }
-    } ~
-      post {
-        complete(sample)
-      }
-  }
-```
-
-- The ```Content-Type: application/json``` does not print as ```application/json;charset=utf-8```, but according to [RFC7158]:
-
-> "JSON text SHALL be encoded in UTF-8, UTF-16, or UTF-32.  The default
-   encoding is UTF-8."
-
-[RFC7158]: https://tools.ietf.org/html/rfc7158#section-11
-
-### Thanks
-
-Thank you for the challenge. I do hope this work has met your expectations. In case of suggestions or questions, I'm looking forward to hear from you at any time.
-
-Best regards, 
-
-Michal Trzesimiech (michal.trzesimiech@gmail.com)
