@@ -1,5 +1,6 @@
 package inviter
 
 /** Domain model */
-case class Invitation(invitee: String, email: String)
+case class Invitation(name: String, email: String)
+
 object Invitation
